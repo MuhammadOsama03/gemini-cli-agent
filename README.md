@@ -1,35 +1,44 @@
 # 🤖 Gemini CLI Agent
 
-A simple Agentic AI command-line assistant built with Python and Google's Gemini API.
+A lightweight tool-calling AI assistant built with Python and Google's Gemini API.
 
-The assistant can decide when to use external tools such as a calculator or web search through Gemini's built-in function calling capability.
+The assistant uses Gemini's function-calling capability to interact with external tools such as a calculator and DuckDuckGo web search while providing an interactive command-line chat experience.
+
+## 📸 Demo
+
+![Gemini CLI Agent Demo](screenshots/demo.png)
 
 ---
 
 ## ✨ Features
 
-- 🤖 AI-powered conversational assistant
-- ➕ Calculator tool
-- 🌐 Web search using DuckDuckGo
-- 💬 Interactive command-line interface
-- 🔐 Secure API key management using environment variables
+* 🤖 Gemini-powered conversational assistant
+* ➕ Calculator tool for basic arithmetic operations
+* 🌐 Web search using DuckDuckGo
+* 🔧 LLM function/tool calling
+* 💬 Interactive command-line interface
+* 🔐 Secure API key management using environment variables
+* ⚠️ Basic API error handling
 
 ---
 
 ## 🛠️ Tech Stack
 
-- Python 3
-- Google Gemini API
-- google-genai SDK
-- DuckDuckGo Search (DDGS)
-- python-dotenv
+* Python 3
+* Google Gemini API
+* `google-genai` SDK
+* DuckDuckGo Search (`ddgs`)
+* `python-dotenv`
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 gemini-cli-agent/
+│
+├── screenshots/
+│   └── demo.png
 │
 ├── agent.py
 ├── config.py
@@ -45,39 +54,39 @@ gemini-cli-agent/
 
 ## 🚀 Installation
 
-Clone the repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/gemini-cli-agent.git
+git clone https://github.com/MuhammadOsama03/gemini-cli-agent.git
 ```
 
-Move into the project folder
+### 2. Move into the project directory
 
 ```bash
 cd gemini-cli-agent
 ```
 
-Create a virtual environment
+### 3. Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-Activate it
+### 4. Activate the virtual environment
 
-Windows
+**Windows**
 
 ```bash
 venv\Scripts\activate
 ```
 
-Linux / macOS
+**Linux / macOS**
 
 ```bash
 source venv/bin/activate
 ```
 
-Install dependencies
+### 5. Install the dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -87,52 +96,87 @@ pip install -r requirements.txt
 
 ## 🔑 Environment Variables
 
-Create a `.env` file in the project root.
-
-Example:
+Create a `.env` file in the project root and add your Gemini API key:
 
 ```env
-GEMINI_API_KEY=YOUR_API_KEY
+GEMINI_API_KEY=YOUR_API_KEY_HERE
 ```
+
+You can use `.env.example` as a template.
+
+> Never commit your actual `.env` file or API key to GitHub.
 
 ---
 
-## ▶️ Run
+## ▶️ Usage
+
+Start the assistant with:
 
 ```bash
 python agent.py
 ```
 
----
+Then interact with it directly from the terminal.
 
-## Example
+### Example
 
+```text
+🤖 CLI Research Agent (type 'exit' to quit)
+
+You: Explain object-oriented programming in one sentence.
+Agent: Object-oriented programming is...
+
+You: Search the web for the latest Python release.
+Agent: ...
 ```
-You: What is 24 × 18?
 
-Agent:
-432
-```
-
-```
-You: Latest AI news
-
-Agent:
-(Searches the web...)
-
-...
-```
+Type `exit` or `quit` to close the assistant.
 
 ---
 
-## 📌 Future Improvements
+## 🧠 How It Works
 
-- Weather Tool
-- Wikipedia Tool
-- File Reader
-- Conversation Memory
-- Voice Input
-- GUI Version
+```text
+User Input
+    │
+    ▼
+Gemini Model
+    │
+    ├── Direct Response
+    │
+    └── Tool Selection
+          │
+          ├── Calculator
+          │
+          └── Web Search
+                  │
+                  ▼
+             Tool Result
+                  │
+                  ▼
+             Gemini Response
+```
+
+Gemini receives the user's request and determines whether it can respond directly or whether an available tool may be useful. The Python application provides the available tools and manages the CLI conversation.
+
+---
+
+## ⚠️ Limitations
+
+* Tool selection is controlled by the Gemini model, so simple tasks may be answered directly without invoking an available tool.
+* Web search currently uses search-result snippets rather than retrieving and verifying complete web pages.
+* Conversation context is limited to the current CLI session and is not stored persistently.
+* Gemini API requests are subject to the quotas and rate limits associated with the configured API key.
+
+---
+
+## 🔮 Possible Future Improvements
+
+* Persistent conversation memory
+* Additional external tools
+* Improved web-source retrieval and verification
+* More detailed tool-use visibility
+* Automated tests
 
 ---
 
