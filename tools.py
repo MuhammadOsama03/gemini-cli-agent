@@ -25,16 +25,21 @@ def web_search(query: str) -> str:
     """
     Searches the web for a given query.
     """
+    if not isinstance(query, str) or not query.strip():
+        return "Search error: query cannot be empty"
+
     try:
-        results = DDGS().text(query, max_results=3)
+        results = DDGS().text(query.strip(), max_results=3)
 
         if not results:
             return "No results found."
 
         summary = ""
 
-        for r in results:
-            summary += f"- {r['title']}: {r['body']}\n"
+        for result in results:
+            title = result.get("title", "Untitled result")
+            body = result.get("body", "No summary available")
+            summary += f"- {title}: {body}\n"
 
         return summary
 
