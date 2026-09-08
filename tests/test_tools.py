@@ -34,6 +34,18 @@ class SearchTests(unittest.TestCase):
         ddgs_cls.return_value.text.side_effect = RuntimeError("offline")
         self.assertIn("Search error: offline", tools.web_search("test"))
 
+    @patch("tools.DDGS")
+    def test_rejects_blank_queries_without_calling_provider(self, ddgs_cls):
+        self.assertEqual(tools.web_search("   "), "Search error: query cannot be empty")
+        ddgs_cls.assert_not_called()
+
+    @patch("tools.DDGS")
+    def test_tolerates_missing_result_fields(self, ddgs_cls):
+        ddgs_cls.return_value.text.return_value = [{}]
+        output = tools.web_search("fallback metadata")
+        self.assertIn("Untitled result", output)
+        self.assertIn("No summary available", output)
+
 
 if __name__ == "__main__":
     unittest.main()
