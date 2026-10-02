@@ -46,6 +46,24 @@ class SearchTests(unittest.TestCase):
         self.assertIn("Untitled result", output)
         self.assertIn("No summary available", output)
 
+    @patch("tools.DDGS")
+    def test_rejects_oversized_queries_without_calling_provider(self, ddgs_cls):
+        output = tools.web_search("x" * (tools.MAX_SEARCH_QUERY_LENGTH + 1))
+
+        self.assertIn("cannot exceed", output)
+        ddgs_cls.assert_not_called()
+
+    @patch("tools.DDGS")
+    def test_truncates_oversized_provider_output(self, ddgs_cls):
+        ddgs_cls.return_value.text.return_value = [
+            {"title": "Large", "body": "x" * 5_000}
+        ]
+
+        output = tools.web_search("large result")
+
+        self.assertLessEqual(len(output), tools.MAX_SEARCH_RESULT_LENGTH)
+        self.assertTrue(output.endswith("[truncated]"))
+
 
 if __name__ == "__main__":
     unittest.main()
